@@ -6,641 +6,554 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-elevated: #111827;
-      --accent: #38bdf8;
-      --accent-soft: rgba(56,189,248,0.15);
-      --text-main: #e5e7eb;
+      --bg: #050816;
+      --card-bg: #0b1020;
+      --accent: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.18);
+      --border-subtle: #1f2933;
+      --text: #e5e7eb;
       --text-muted: #9ca3af;
-      --danger: #f97373;
-      --border-subtle: #1f2937;
-      --radius-lg: 16px;
-      --radius-full: 999px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.7);
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        Segoe UI, sans-serif;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
-      color: var(--text-main);
+      background: radial-gradient(circle at top, #1f2937 0, #050816 52%, #000 100%);
+      color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
     }
 
-    .app-shell {
+    .shell {
       width: 100%;
-      max-width: 960px;
-      background: linear-gradient(145deg, rgba(148,163,184,0.12), rgba(15,23,42,0.98));
-      border-radius: 24px;
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow:
-        0 24px 80px rgba(15,23,42,0.85),
-        0 0 0 1px rgba(15,23,42,0.8);
-      overflow: hidden;
-      backdrop-filter: blur(18px);
-    }
-
-    .app-header {
-      padding: 18px 24px 12px;
-      border-bottom: 1px solid rgba(148,163,184,0.3);
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      background: radial-gradient(circle at 30% 20%, #e0f2fe 0, #38bdf8 35%, #0ea5e9 60%, #0369a1 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #0b1220;
-      font-weight: 800;
-      font-size: 18px;
-      box-shadow:
-        0 0 0 1px rgba(15,23,42,0.6),
-        0 10px 25px rgba(8,47,73,0.9);
-    }
-
-    .brand-text-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .brand-badge {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(34,197,94,0.08);
-      border: 1px solid rgba(34,197,94,0.25);
-      color: #bbf7d0;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .brand-text-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .header-pill {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.85);
-      border: 1px solid rgba(148,163,184,0.4);
-      font-size: 11px;
-      color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .header-pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34,197,94,0.7);
-    }
-
-    .app-body {
-      padding: 18px 24px 22px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 18px;
-    }
-
-    @media (max-width: 800px) {
-      .app-body {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      max-width: 1080px;
     }
 
     .card {
-      background: rgba(15,23,42,0.9);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      padding: 16px 16px 14px;
-      box-shadow:
-        0 18px 40px rgba(15,23,42,0.85),
-        inset 0 1px 0 rgba(148,163,184,0.13);
+      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      border-radius: 26px;
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      backdrop-filter: blur(18px);
     }
 
-    .card-header {
+    .header-row {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 10px;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
 
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
+    .badge {
+      font-size: 0.7rem;
       text-transform: uppercase;
-      color: #e5e7eb;
+      letter-spacing: 0.12em;
+      padding: 2px 9px 3px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.55);
     }
 
-    .card-subtitle {
-      font-size: 12px;
+    .subtitle {
+      font-size: 0.85rem;
       color: var(--text-muted);
     }
 
-    .field-group {
-      margin-bottom: 10px;
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.05fr;
+      gap: 18px;
     }
 
-    .field-label {
-      font-size: 12px;
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 16px;
+      }
+    }
+
+    .panel {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), #020617);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #c7d2fe;
+      margin-bottom: 4px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
       color: var(--text-muted);
       margin-bottom: 4px;
-      display: block;
     }
 
-    .input,
-    .select {
+    input,
+    textarea {
       width: 100%;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(31,41,55,0.9);
-      background: rgba(15,23,42,0.95);
-      color: var(--text-main);
-      font-size: 13px;
+      background: #020617;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 9px 11px;
+      color: var(--text);
+      font-size: 0.9rem;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    .input:focus,
-    .select:focus {
+    input:focus,
+    textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
-      background: rgba(15,23,42,0.98);
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.5);
+      background: #020617;
     }
 
-    .input::placeholder {
-      color: rgba(148,163,184,0.7);
+    textarea {
+      min-height: 90px;
+      resize: vertical;
     }
 
-    .helper-text {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .radio-row {
+    .row {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
-    .pill-radio {
+    .row > div {
+      flex: 1;
+    }
+
+    .pill-row {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 3px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      margin-bottom: 4px;
+    }
+
+    .pill {
+      position: relative;
+    }
+
+    .pill input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .pill span {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      border-radius: var(--radius-full);
-      padding: 6px 10px;
-      border: 1px solid rgba(31,41,55,0.9);
-      background: rgba(15,23,42,0.92);
-      font-size: 12px;
-      color: var(--text-muted);
+      padding: 4px 10px 5px;
+      border-radius: 999px;
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: all 0.15s ease;
+      color: var(--text-muted);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
     }
 
-    .pill-radio input {
-      display: none;
-    }
-
-    .pill-radio.active {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56,189,248,0.35);
-      background: rgba(15,23,42,1);
-      color: var(--text-main);
-    }
-
-    .pill-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      border: 1px solid rgba(148,163,184,0.7);
-      background: transparent;
-    }
-
-    .pill-radio.active .pill-dot {
-      background: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 0 10px rgba(56,189,248,0.8);
+    .pill input:checked + span {
+      background: radial-gradient(circle at top left, #4f46e5, #6366f1);
+      color: white;
     }
 
     .btn-row {
       display: flex;
-      justify-content: flex-end;
-      margin-top: 12px;
-      gap: 10px;
-      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
     }
 
-    .btn-primary {
-      padding: 8px 16px;
-      border-radius: var(--radius-full);
+    button {
+      border-radius: 999px;
       border: none;
-      background: radial-gradient(circle at 30% 0, #e0f2fe 0, #38bdf8 40%, #0ea5e9 70%, #0369a1 100%);
-      color: #0b1120;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
+      padding: 7px 14px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      cursor: pointer;
-      box-shadow:
-        0 14px 35px rgba(8,47,73,0.85),
-        0 0 0 1px rgba(15,23,42,0.65);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+      background: var(--accent-soft);
+      color: #e0e7ff;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      transition: background 0.15s, transform 0.08s ease-out, box-shadow 0.15s;
+      box-shadow: 0 12px 25px rgba(30, 64, 175, 0.35);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.06);
-      box-shadow:
-        0 18px 42px rgba(8,47,73,0.98),
-        0 0 0 1px rgba(15,23,42,0.8);
+    button.primary {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: white;
     }
 
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow:
-        0 8px 24px rgba(8,47,73,0.85),
-        0 0 0 1px rgba(15,23,42,0.9);
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 16px rgba(30, 64, 175, 0.5);
     }
 
-    .btn-icon {
-      font-size: 14px;
+    button.secondary {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.6);
+      box-shadow: none;
     }
 
-    .badge-small {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
+    .hint {
+      font-size: 0.75rem;
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
     }
 
-    .status-text {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-align: right;
-    }
-
-    .status-text strong {
-      color: var(--accent);
-    }
-
-    .log-box {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 11px;
-      padding: 10px;
-      border-radius: 10px;
-      background: rgba(15,23,42,0.95);
-      border: 1px dashed rgba(55,65,81,0.9);
-      color: var(--text-muted);
-      white-space: pre-wrap;
-      max-height: 180px;
-      overflow: auto;
-    }
-
-    .log-highlight {
-      color: #e5e7eb;
-    }
-
-    .xml-preview {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 11px;
-      background: rgba(15,23,42,0.95);
-      border-radius: 10px;
-      border: 1px solid rgba(31,41,55,0.9);
-      padding: 10px;
-      color: #d1d5db;
-      max-height: 210px;
-      overflow: auto;
+    textarea.readonly {
+      min-height: 150px;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
       white-space: pre;
-    }
-
-    .xml-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .xml-tab {
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(31,41,55,0.9);
-      background: rgba(15,23,42,0.95);
-      font-size: 11px;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-
-    .xml-tab.active {
-      border-color: var(--accent);
-      color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56,189,248,0.3);
-    }
-
-    .error-text {
-      color: var(--danger);
-      font-size: 11px;
-      margin-top: 4px;
+      line-height: 1.35;
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="app-header">
-      <div class="brand">
-        <div class="brand-logo">S</div>
+  <div class="shell">
+    <div class="card">
+      <div class="header-row">
         <div>
-          <div class="brand-text-title">
-            Storylio XML
-            <span class="brand-badge">CPI PoD Helper</span>
+          <h1>
+            Storylio XML Generator
+            <span class="badge">POD</span>
+          </h1>
+          <div class="subtitle">Schnell Mastering & DropShipOrder XML erzeugen.</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- Eingaben -->
+        <div class="panel">
+          <div class="panel-title">Eingabe</div>
+
+          <div>
+            <label for="address">Versandadresse</label>
+            <textarea
+              id="address"
+              placeholder="z. B.&#10;Daniela Hönig, Pöhlbergsiedlung 5, 09456 Annaberg-B., Deutschland"
+            ></textarea>
           </div>
-          <div class="brand-text-sub">
-            Aus Shopify-Adresszeile &amp; Order-ID in einem Klick zu CPI-konformen XMLs.
+
+          <div class="row">
+            <div>
+              <label for="orderNumber">Shopify-Bestellnummer</label>
+              <input
+                id="orderNumber"
+                type="text"
+                placeholder="#St219732156"
+                autocomplete="off"
+              />
+            </div>
+            <div>
+              <label for="childName">Name des Kindes</label>
+              <input
+                id="childName"
+                type="text"
+                placeholder="Nina"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label>Einband</label>
+            <div class="pill-row">
+              <label class="pill">
+                <input type="radio" name="bookType" value="HC" checked />
+                <span>Hardcover</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="bookType" value="SC" />
+                <span>Softcover</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label>Geschichte</label>
+            <div class="pill-row" id="storyPills">
+              <label class="pill">
+                <input type="radio" name="storyType" value="pferde" checked />
+                <span>🐴 Pferde</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="eisprinzessin" />
+                <span❄>❄️ Eisprinzessin</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="meerjungfrauen" />
+                <span>🧜‍♀️ Meerjungfrau</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="einhörner" />
+                <span>🦄 Einhorn</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="prinzessin" />
+                <span>👑 Prinzessin</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="feuerwehr" />
+                <span>🚒 Feuerwehr</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="astronaut" />
+                <span>🚀 Astronaut</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="dinosaurier" />
+                <span>🦖 Dinosaurier</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="superheld" />
+                <span>🦸‍♂️ Superheld</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="ritter" />
+                <span>⚔️ Ritter</span>
+              </label>
+              <label class="pill">
+                <input type="radio" name="storyType" value="pirat" />
+                <span>🏴‍☠️ Pirat</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="primary" onclick="downloadBoth()">Beide XML herunterladen</button>
+            <button class="secondary" onclick="downloadMastering()">Nur Mastering</button>
+            <button class="secondary" onclick="downloadOrder()">Nur DropShipOrder</button>
+          </div>
+
+          <div class="hint">
+            ISBN wird automatisch aus Präfix <code>9789000</code> + Bestellnummer erzeugt.
+            Umfang ist fest auf 36 Seiten.
+          </div>
+        </div>
+
+        <!-- Vorschau -->
+        <div class="panel">
+          <div class="panel-title">Vorschau</div>
+
+          <div>
+            <label for="masteringPreview">Mastering XML</label>
+            <textarea id="masteringPreview" class="readonly" readonly></textarea>
+          </div>
+
+          <div>
+            <label for="orderPreview">DropShipOrder XML</label>
+            <textarea id="orderPreview" class="readonly" readonly></textarea>
           </div>
         </div>
       </div>
-      <div class="header-pill">
-        <span class="header-pill-dot"></span>
-        Live • Lokal im Browser, keine Server
-      </div>
-    </header>
-
-    <main class="app-body">
-      <!-- Linke Seite: Eingaben -->
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Eingaben</div>
-            <div class="card-subtitle">Shopify-Daten einfügen, Cover-Typ wählen, XML generieren.</div>
-          </div>
-          <div class="badge-small">Schritt 1 von 1</div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="addressInput">Adresszeile (aus Shopify kopiert)</label>
-          <input
-            id="addressInput"
-            class="input"
-            type="text"
-            placeholder="z. B. Daniela Hönig, Pöhlbergsiedlung 5, 09456 Annaberg-B., Deutschland"
-          />
-          <div class="helper-text">
-            Format: <span class="log-highlight">Name, Straße Hausnummer, PLZ Ort, Land</span>
-          </div>
-          <div id="addressError" class="error-text" style="display:none;"></div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="orderInput">Shopify-Bestellnummer</label>
-          <input
-            id="orderInput"
-            class="input"
-            type="text"
-            placeholder="#St222832156"
-          />
-          <div class="helper-text">
-            <span class="log-highlight">#</span> wird automatisch entfernt, z. B. <span class="log-highlight">St222832156</span>.
-          </div>
-          <div id="orderError" class="error-text" style="display:none;"></div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">Cover-Typ</div>
-          <div class="radio-row">
-            <label class="pill-radio active" data-cover="HC">
-              <span class="pill-dot"></span>
-              <span>Hardcover (HC)</span>
-            </label>
-            <label class="pill-radio" data-cover="SC">
-              <span class="pill-dot"></span>
-              <span>Softcover (SC)</span>
-            </label>
-          </div>
-          <div class="helper-text">
-            Steuert <span class="log-highlight">&lt;BookType&gt;</span>, Papier und Dateinamen-Suffix (<span class="log-highlight">_Cover_HC</span> / <span class="log-highlight">_Cover_SC</span>).
-          </div>
-        </div>
-
-        <div class="btn-row">
-          <div class="status-text">
-            Ausgabe-Dateien: <strong>Mastering XML</strong> &amp; <strong>DropShipOrder XML</strong>
-          </div>
-          <button id="generateBtn" class="btn-primary">
-            <span class="btn-icon">⚙️</span>
-            <span>XML generieren &amp; downloaden</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- Rechte Seite: Vorschau & Log -->
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Vorschau &amp; Hinweise</div>
-            <div class="card-subtitle">Schnellcheck der generierten Inhalte und Dateinamen.</div>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">Generierungslog</div>
-          <div id="logBox" class="log-box">
-Bereit. Füge links die Shopify-Adresszeile und Order-ID ein, wähle HC/SC
-und klicke dann auf <span class="log-highlight">"XML generieren & downloaden"</span>.
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">XML-Vorschau</div>
-          <div class="xml-tabs">
-            <button class="xml-tab active" data-tab="mastering">Mastering.xml</button>
-            <button class="xml-tab" data-tab="order">DropShipOrder.xml</button>
-          </div>
-          <pre id="xmlPreview" class="xml-preview">&lt;!-- Noch keine XML generiert. --&gt;</pre>
-        </div>
-      </section>
-    </main>
+    </div>
   </div>
 
   <script>
-    const ISBN_PREFIX = "978900";
-
-    const COUNTRY_MAP = {
-      "deutschland": "DE",
-      "germany": "DE",
-      "schweiz": "CH",
-      "switzerland": "CH",
-      "österreich": "AT",
-      "austria": "AT"
+    const defaults = {
+      fromCompany: "Storylio",
+      fromCompanyNumber: "31174",
+      fromPerson: "Amir Schariaty",
+      fromEmail: "storylio.hilfe@gmail.com",
+      isbnPrefix: "9789000",
+      pages: 36,
     };
 
-    const DEFAULT_HEIGHT_MM = 200;
-    const DEFAULT_WIDTH_MM = 200;
-    const DEFAULT_PAGES = 36;
+    const STORY_TITLES = {
+      pferde: "NAME - Der Kampf um das Lieblingspferd",
+      eisprinzessin: "NAME - Die Eisprinzessin und das Herz des Winters",
+      meerjungfrauen: "NAME - Die Meerjungfrau",
+      einhörner: "NAME - Die Reise zum Regenbogen",
+      prinzessin: "NAME - Die Prinzessin",
+      feuerwehr: "NAME - Das große Abenteuer im Einsatz",
+      astronaut: "NAME - Der Astronaut",
+      dinosaurier: "NAME - Eine magische Reise in eine uralte Welt",
+      superheld: "NAME - Der Superheld in der Stadt",
+      ritter: "NAME - Der Ritter",
+      pirat: "NAME - Der Pirat",
+    };
 
-    const addressInput = document.getElementById("addressInput");
-    const orderInput = document.getElementById("orderInput");
-    const addressError = document.getElementById("addressError");
-    const orderError = document.getElementById("orderError");
-    const generateBtn = document.getElementById("generateBtn");
-    const logBox = document.getElementById("logBox");
-    const xmlPreview = document.getElementById("xmlPreview");
-    const xmlTabs = document.querySelectorAll(".xml-tab");
-    const coverPills = document.querySelectorAll(".pill-radio");
-
-    let currentCoverType = "HC";
-    let lastMasteringXml = "";
-    let lastOrderXml = "";
-
-    coverPills.forEach(pill => {
-      pill.addEventListener("click", () => {
-        coverPills.forEach(p => p.classList.remove("active"));
-        pill.classList.add("active");
-        currentCoverType = pill.getAttribute("data-cover");
-      });
-    });
-
-    xmlTabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        xmlTabs.forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-        if (tab.getAttribute("data-tab") === "mastering") {
-          xmlPreview.textContent = lastMasteringXml || "<!-- Noch keine Mastering-XML generiert. -->";
-        } else {
-          xmlPreview.textContent = lastOrderXml || "<!-- Noch keine DropShipOrder-XML generiert. -->";
-        }
-      });
-    });
-
-    function xmlEscape(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&apos;");
+    function pad2(n) {
+      return n.toString().padStart(2, "0");
     }
 
-    function parseAddress(raw) {
-      const parts = raw.split(",").map(p => p.trim()).filter(Boolean);
-      if (parts.length < 4) {
-        throw new Error("Adresse muss das Format 'Name, Straße Hausnummer, PLZ Ort, Land' haben.");
-      }
-      const name = parts[0];
-      const street = parts[1];
-      const plzOrt = parts[2];
-      const countryName = parts[3];
-
-      const plzOrtParts = plzOrt.split(/\s+/);
-      if (plzOrtParts.length < 2) {
-        throw new Error("Der dritte Teil der Adresse muss PLZ und Ort enthalten, z.B. '09456 Annaberg-B.'.");
-      }
-      const zip = plzOrtParts[0];
-      const city = plzOrtParts.slice(1).join(" ");
-
-      const countryCode = COUNTRY_MAP[countryName.toLowerCase()] || "DE";
-
-      return { name, street, zip, city, country: countryCode };
-    }
-
-    function normalizeOrderNumber(raw) {
-      let order = raw.trim();
-      if (order.startsWith("#")) {
-        order = order.slice(1).trim();
-      }
-      if (!order) {
-        throw new Error("Bestellnummer darf nicht leer sein.");
-      }
-      return order;
-    }
-
-    function makeIsbnFromOrder(orderNumber) {
-      const digits = (orderNumber.match(/\d+/g) || []).join("");
-      if (!digits) {
-        throw new Error("Bestellnummer enthält keine Ziffern, kann keine ISBN erzeugen.");
-      }
-      return ISBN_PREFIX + digits;
-    }
-
-    function currentDateTime() {
-      const now = new Date();
-      const pad = n => n.toString().padStart(2, "0");
-      const year = now.getFullYear();
-      const month = pad(now.getMonth() + 1);
-      const day = pad(now.getDate());
-      const hours = pad(now.getHours());
-      const mins = pad(now.getMinutes());
+    function getNow() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = pad2(d.getMonth() + 1);
+      const day = pad2(d.getDate());
+      const hours = pad2(d.getHours());
+      const minutes = pad2(d.getMinutes());
       return {
-        sentDate: `${year}${month}${day}`,
-        sentTime: `${hours}:${mins}`
+        date: `${year}${month}${day}`,
+        time: `${hours}:${minutes}`,
       };
     }
 
-    function generateMasteringXml(data) {
-      const { sentDate, sentTime } = currentDateTime();
+    function sanitizeOrderNumber(raw) {
+      if (!raw) return "";
+      return raw.trim().replace(/^#/, "");
+    }
 
-      const isHC = data.coverType === "HC";
-      const bookType = isHC ? "HC" : "SC";
-      const coverSuffix = isHC ? "HC" : "SC";
+    function extractDigits(str) {
+      return (str || "").replace(/\D+/g, "");
+    }
+
+    function parseAddress(raw) {
+      const parts = (raw || "")
+        .split("\n")
+        .join(" ")
+        .split(",")
+        .map((p) => p.trim())
+        .filter((p) => p.length > 0);
+
+      const [line1 = "", street = "", zipCity = "", country = ""] = parts;
+
+      let zip = "";
+      let city = "";
+      if (zipCity) {
+        const m = zipCity.match(/^(\S+)\s+(.+)$/);
+        if (m) {
+          zip = m[1];
+          city = m[2];
+        } else {
+          city = zipCity;
+        }
+      }
+
+      const countryMap = {
+        deutschland: "DE",
+        germany: "DE",
+        schweiz: "CH",
+        switzerland: "CH",
+        österreich: "AT",
+        austria: "AT",
+      };
+
+      let countryCode = "";
+      const lower = country.toLowerCase();
+      Object.keys(countryMap).forEach((key) => {
+        if (lower.includes(key)) {
+          countryCode = countryMap[key];
+        }
+      });
+      if (!countryCode && country.length === 2) {
+        countryCode = country.toUpperCase();
+      }
+
+      return {
+        addressLine1: line1,
+        street,
+        zip,
+        city,
+        country: countryCode || country || "",
+      };
+    }
+
+    function buildIsbn() {
+      const orderRaw = sanitizeOrderNumber(
+        document.getElementById("orderNumber").value
+      );
+      const suffixDigits = extractDigits(orderRaw);
+      return defaults.isbnPrefix + suffixDigits;
+    }
+
+    function getSelectedStoryType() {
+      const el = document.querySelector('input[name="storyType"]:checked');
+      return el ? el.value : "pferde";
+    }
+
+    function getStoryTitle(childName, storyType) {
+      const template =
+        STORY_TITLES[storyType] || "NAME - Deine Geschichte";
+      const name = childName && childName.trim() ? childName.trim() : "NAME";
+      return template.replace("NAME", name);
+    }
+
+    function buildMasteringXml() {
+      const { date, time } = getNow();
+      const orderRaw = sanitizeOrderNumber(
+        document.getElementById("orderNumber").value
+      );
+      const childName = document.getElementById("childName").value.trim();
+      const isbn = buildIsbn();
+
+      const bookType = document.querySelector(
+        'input[name="bookType"]:checked'
+      ).value;
+
+      const storyType = getSelectedStoryType();
+      const titleText = getStoryTitle(childName, storyType);
+
+      const pages = defaults.pages;
+      const isHC = bookType === "HC";
       const coverPaper = isHC ? "150g_BD100" : "275g_BD100";
+      const textPaper = "140g_BD100";
 
-      const xml =
-`<?xml version="1.0" encoding="UTF-8"?>
+      const coverFile = `${isbn}_Cover_${bookType}.pdf`;
+      const textFile = `${isbn}_Bookblock.pdf`;
+
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <CPI>
   <Header>
-    <FromCompany>Storylio</FromCompany>
-    <FromCompanyNumber>31174</FromCompanyNumber>
-    <SentDate>${sentDate}</SentDate>
-    <SentTime>${sentTime}</SentTime>
-    <FromPerson>Amir Schariaty</FromPerson>
-    <FromEmail>storylio.hilfe@gmail.com</FromEmail>
+    <FromCompany>${defaults.fromCompany}</FromCompany>
+    <FromCompanyNumber>${defaults.fromCompanyNumber}</FromCompanyNumber>
+    <SentDate>${date}</SentDate>
+    <SentTime>${time}</SentTime>
+    <FromPerson>${defaults.fromPerson}</FromPerson>
+    <FromEmail>${defaults.fromEmail}</FromEmail>
   </Header>
 
   <Title>
     <Type>import</Type>
-
-    <ISBN>${xmlEscape(data.isbn)}</ISBN>
-    <Author>Storylio</Author>
-    <Title>Pferdeabenteuer - Personalisiertes Kinderbuch</Title>
-
-    <Height>${DEFAULT_HEIGHT_MM}</Height>
-    <Width>${DEFAULT_WIDTH_MM}</Width>
-
+    <ISBN>${isbn}</ISBN>
+    <Author>${defaults.fromCompany}</Author>
+    <Title>${titleText}</Title>
+    <Height>200</Height>
+    <Width>200</Width>
     <BookType>${bookType}</BookType>
     <Backing>straight</Backing>
 
@@ -648,66 +561,77 @@ und klicke dann auf <span class="log-highlight">"XML generieren & downloaden"</s
       <Pages>1</Pages>
       <Lamination>glossy</Lamination>
       <PaperName>${coverPaper}</PaperName>
-      <FileName>${xmlEscape(data.isbn)}_Cover_${coverSuffix}.pdf</FileName>
+      <FileName>${coverFile}</FileName>
       <BarcodePosition>bottom-right</BarcodePosition>
     </Cover>
 
     <Text>
-      <TotalExtent>${DEFAULT_PAGES}</TotalExtent>
-      <ColourPages>${DEFAULT_PAGES}</ColourPages>
-      <HeadTailBand>none</HeadTailBand>
-      <Ribbon>none</Ribbon>
-      <PaperName>140g_BD100</PaperName>
-      <FileName>${xmlEscape(data.isbn)}_Bookblock.pdf</FileName>
+      <TotalExtent>${pages}</TotalExtent>
+      <ColourPages>${pages}</ColourPages>
+      <HeadTailBand>${isHC ? "none" : "none"}</HeadTailBand>
+      <Ribbon>${isHC ? "none" : "none"}</Ribbon>
+      <PaperName>${textPaper}</PaperName>
+      <FileName>${textFile}</FileName>
     </Text>
-
   </Title>
-</CPI>
-`;
-      return xml;
+</CPI>`;
+
+      return { xml, isbn, orderNumber: orderRaw };
     }
 
-    function generateOrderXml(data) {
-      const { sentDate, sentTime } = currentDateTime();
+    function buildOrderXml() {
+      const { date, time } = getNow();
+      const orderRaw = sanitizeOrderNumber(
+        document.getElementById("orderNumber").value
+      );
+      const isbn = buildIsbn();
+      const addressRaw = document.getElementById("address").value;
+      const addr = parseAddress(addressRaw);
 
-      const xml =
-`<?xml version="1.0" encoding="utf-8"?>
+      const xml = `<?xml version="1.0" encoding="utf-8"?>
 <CPI>
   <Header>
-    <FromCompany>Storylio</FromCompany>
-    <FromCompanyNumber>31174</FromCompanyNumber>
-    <SentDate>${sentDate}</SentDate>
-    <SentTime>${sentTime}</SentTime>
-    <FromPerson>Amir Schariaty</FromPerson>
-    <FromEmail>storylio.hilfe@gmail.com</FromEmail>
+    <FromCompany>${defaults.fromCompany}</FromCompany>
+    <FromCompanyNumber>${defaults.fromCompanyNumber}</FromCompanyNumber>
+    <SentDate>${date}</SentDate>
+    <SentTime>${time}</SentTime>
+    <FromPerson>${defaults.fromPerson}</FromPerson>
+    <FromEmail>${defaults.fromEmail}</FromEmail>
   </Header>
 
   <DropShipOrder>
-    <OrderNumber>${xmlEscape(data.orderNumber)}</OrderNumber>
+    <OrderNumber>${orderRaw}</OrderNumber>
     <Shipping>DHL Standard</Shipping>
     <InvoiceFile></InvoiceFile>
 
     <Product>
-      <EAN>${xmlEscape(data.isbn)}</EAN>
+      <EAN>${isbn}</EAN>
       <Copies>1</Copies>
     </Product>
 
     <ShippingAddress>
-      <AddressLine1>${xmlEscape(data.name)}</AddressLine1>
+      <AddressLine1>${addr.addressLine1}</AddressLine1>
       <AddressLine2></AddressLine2>
-      <Street>${xmlEscape(data.street)}</Street>
-      <ZIP>${xmlEscape(data.zip)}</ZIP>
-      <City>${xmlEscape(data.city)}</City>
+      <Street>${addr.street}</Street>
+      <ZIP>${addr.zip}</ZIP>
+      <City>${addr.city}</City>
       <Phone></Phone>
-      <Country>${xmlEscape(data.country)}</Country>
+      <Country>${addr.country}</Country>
     </ShippingAddress>
   </DropShipOrder>
-</CPI>
-`;
-      return xml;
+</CPI>`;
+
+      return { xml, isbn, orderNumber: orderRaw };
     }
 
-    function downloadFile(filename, content) {
+    function refreshPreviews() {
+      const m = buildMasteringXml();
+      const o = buildOrderXml();
+      document.getElementById("masteringPreview").value = m.xml;
+      document.getElementById("orderPreview").value = o.xml;
+    }
+
+    function downloadTextFile(filename, content) {
       const blob = new Blob([content], { type: "application/xml;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -719,95 +643,39 @@ und klicke dann auf <span class="log-highlight">"XML generieren & downloaden"</s
       URL.revokeObjectURL(url);
     }
 
-    function log(message, isError = false) {
-      const time = new Date().toLocaleTimeString("de-DE", { hour12: false });
-      const prefix = isError ? "✖" : "✔";
-      const color = isError ? "var(--danger)" : "var(--accent)";
-      const line = `%c[${time}] ${prefix} ${message}\n`;
-      // In der Box:
-      const existing = logBox.textContent || "";
-      logBox.textContent = `[${time}] ${prefix} ${message}\n` + existing;
+    function downloadMastering() {
+      const { xml, isbn } = buildMasteringXml();
+      const filename = `${isbn}_MasteringOrder.xml`;
+      downloadTextFile(filename, xml);
+      refreshPreviews();
     }
 
-    generateBtn.addEventListener("click", () => {
-      addressError.style.display = "none";
-      orderError.style.display = "none";
+    function downloadOrder() {
+      const { xml, orderNumber } = buildOrderXml();
+      const filename = `CPI_DropShipOrder_${orderNumber || "Order"}.xml`;
+      downloadTextFile(filename, xml);
+      refreshPreviews();
+    }
 
-      const rawAddress = addressInput.value.trim();
-      const rawOrder = orderInput.value.trim();
+    function downloadBoth() {
+      downloadMastering();
+      downloadOrder();
+    }
 
-      if (!rawAddress) {
-        addressError.textContent = "Bitte die Adresszeile einfügen.";
-        addressError.style.display = "block";
-        return;
-      }
-      if (!rawOrder) {
-        orderError.textContent = "Bitte die Shopify-Bestellnummer eingeben.";
-        orderError.style.display = "block";
-        return;
-      }
-
-      let addr, orderNumber, isbn;
-
-      try {
-        addr = parseAddress(rawAddress);
-      } catch (e) {
-        addressError.textContent = e.message;
-        addressError.style.display = "block";
-        log(`Adress-Parsing fehlgeschlagen: ${e.message}`, true);
-        return;
-      }
-
-      try {
-        orderNumber = normalizeOrderNumber(rawOrder);
-      } catch (e) {
-        orderError.textContent = e.message;
-        orderError.style.display = "block";
-        log(`Order-ID ungültig: ${e.message}`, true);
-        return;
-      }
-
-      try {
-        isbn = makeIsbnFromOrder(orderNumber);
-      } catch (e) {
-        orderError.textContent = e.message;
-        orderError.style.display = "block";
-        log(`ISBN konnte nicht erzeugt werden: ${e.message}`, true);
-        return;
-      }
-
-      const data = {
-        orderNumber,
-        isbn,
-        name: addr.name,
-        street: addr.street,
-        zip: addr.zip,
-        city: addr.city,
-        country: addr.country,
-        coverType: currentCoverType
-      };
-
-      const masteringXml = generateMasteringXml(data);
-      const orderXml = generateOrderXml(data);
-
-      lastMasteringXml = masteringXml;
-      lastOrderXml = orderXml;
-
-      const masteringFilename = `${data.isbn}_Mastering.xml`;
-      const orderFilename = `CPI_DropShipOrder_${data.orderNumber}.xml`;
-
-      downloadFile(masteringFilename, masteringXml);
-      downloadFile(orderFilename, orderXml);
-
-      xmlTabs.forEach(t => t.classList.remove("active"));
-      xmlTabs[0].classList.add("active");
-      xmlPreview.textContent = masteringXml;
-
-      log(`XML erzeugt für Order ${data.orderNumber} | ISBN ${data.isbn}`);
-      log(`Bitte PDFs mit folgenden Dateinamen erstellen:`);
-      log(`- ${data.isbn}_Bookblock.pdf`);
-      log(`- ${data.isbn}_Cover_${data.coverType}.pdf`);
+    ["address", "orderNumber", "childName"].forEach((id) => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", refreshPreviews);
     });
+
+    document
+      .querySelectorAll('input[name="bookType"]')
+      .forEach((el) => el.addEventListener("change", refreshPreviews));
+
+    document
+      .querySelectorAll('input[name="storyType"]')
+      .forEach((el) => el.addEventListener("change", refreshPreviews));
+
+    window.addEventListener("load", refreshPreviews);
   </script>
 </body>
 </html>
