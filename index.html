@@ -10,10 +10,11 @@
       --card-bg: #0b1020;
       --accent: #6366f1;
       --accent-soft: rgba(99, 102, 241, 0.18);
+      --accent-strong: #4f46e5;
       --border-subtle: #1f2933;
       --text: #e5e7eb;
       --text-muted: #9ca3af;
-      --radius-lg: 18px;
+      --radius-lg: 20px;
       --radius-md: 12px;
       --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.7);
     }
@@ -38,21 +39,28 @@
 
     .shell {
       width: 100%;
-      max-width: 1080px;
+      max-width: 860px;
     }
 
     .card {
       background: radial-gradient(circle at top left, #111827 0, #020617 60%);
       border-radius: 26px;
-      padding: 20px;
+      padding: 22px 20px 18px;
       box-shadow: var(--shadow-soft);
       border: 1px solid rgba(148, 163, 184, 0.18);
       backdrop-filter: blur(18px);
     }
 
+    @media (max-width: 720px) {
+      .card {
+        padding: 18px 14px 16px;
+        border-radius: 22px;
+      }
+    }
+
     .header-row {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 18px;
@@ -80,31 +88,17 @@
     .subtitle {
       font-size: 0.85rem;
       color: var(--text-muted);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.05fr 1.05fr;
-      gap: 18px;
-    }
-
-    @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      .card {
-        padding: 16px;
-      }
+      margin-top: 2px;
     }
 
     .panel {
       background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), #020617);
       border-radius: var(--radius-lg);
-      padding: 14px;
+      padding: 16px 14px 14px;
       border: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .panel-title {
@@ -113,7 +107,7 @@
       letter-spacing: 0.09em;
       text-transform: uppercase;
       color: #c7d2fe;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     label {
@@ -146,7 +140,7 @@
     }
 
     textarea {
-      min-height: 90px;
+      min-height: 80px;
       resize: vertical;
     }
 
@@ -159,11 +153,17 @@
       flex: 1;
     }
 
+    @media (max-width: 640px) {
+      .row {
+        flex-direction: column;
+      }
+    }
+
     .pill-row {
       display: inline-flex;
       flex-wrap: wrap;
-      gap: 6px;
-      padding: 3px;
+      gap: 8px;
+      padding: 4px;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.9);
       margin-bottom: 4px;
@@ -183,58 +183,46 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px 5px;
+      padding: 5px 12px 6px;
       border-radius: 999px;
       font-size: 0.8rem;
       cursor: pointer;
       color: var(--text-muted);
-      transition: background 0.15s, color 0.15s;
+      border: 1px solid transparent;
+      transition: background 0.15s, color 0.15s, border 0.15s, transform 0.08s;
       white-space: nowrap;
+    }
+
+    .pill span:hover {
+      border-color: rgba(148, 163, 184, 0.6);
     }
 
     .pill input:checked + span {
       background: radial-gradient(circle at top left, #4f46e5, #6366f1);
       color: white;
+      border-color: rgba(129, 140, 248, 0.9);
+      transform: translateY(0);
     }
 
-    .btn-row {
+    .pill span small {
+      font-size: 0.7rem;
+      opacity: 0.85;
+    }
+
+    .story-group {
+      padding: 10px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top left, #020617, #020617 40%, #020617 100%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .story-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    button {
-      border-radius: 999px;
-      border: none;
-      padding: 7px 14px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
       gap: 6px;
-      background: var(--accent-soft);
-      color: #e0e7ff;
-      border: 1px solid rgba(129, 140, 248, 0.6);
-      transition: background 0.15s, transform 0.08s ease-out, box-shadow 0.15s;
-      box-shadow: 0 12px 25px rgba(30, 64, 175, 0.35);
-    }
-
-    button.primary {
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: white;
-    }
-
-    button:active {
-      transform: translateY(1px);
-      box-shadow: 0 6px 16px rgba(30, 64, 175, 0.5);
-    }
-
-    button.secondary {
-      background: rgba(15, 23, 42, 0.9);
-      border-color: rgba(148, 163, 184, 0.6);
-      box-shadow: none;
     }
 
     .hint {
@@ -242,12 +230,50 @@
       color: var(--text-muted);
     }
 
-    textarea.readonly {
-      min-height: 150px;
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-        Consolas, "Liberation Mono", "Courier New", monospace;
-      white-space: pre;
-      line-height: 1.35;
+    .btn-main-wrap {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-main {
+      border-radius: 999px;
+      border: none;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: white;
+      border: 1px solid rgba(191, 219, 254, 0.4);
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.65);
+      transition: background 0.15s, transform 0.08s ease-out, box-shadow 0.15s;
+      min-width: 260px;
+      justify-content: center;
+    }
+
+    .btn-main span.icon {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .btn-main:hover {
+      box-shadow: 0 22px 46px rgba(37, 99, 235, 0.8);
+    }
+
+    .btn-main:active {
+      transform: translateY(1px);
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.9);
+    }
+
+    .footer-hint {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
     }
   </style>
 </head>
@@ -260,133 +286,116 @@
             Storylio XML Generator
             <span class="badge">POD</span>
           </h1>
-          <div class="subtitle">Schnell Mastering & DropShipOrder XML erzeugen.</div>
+          <div class="subtitle">Wenige Felder ausfüllen, Klick – beide XML-Dateien fertig.</div>
         </div>
       </div>
 
-      <div class="grid">
-        <!-- Eingaben -->
-        <div class="panel">
-          <div class="panel-title">Eingabe</div>
+      <div class="panel">
+        <div class="panel-title">Eingabe</div>
 
+        <div>
+          <label for="address">Versandadresse</label>
+          <textarea
+            id="address"
+            placeholder="z. B.&#10;Daniela Hönig, Pöhlbergsiedlung 5, 09456 Annaberg-B., Deutschland"
+          ></textarea>
+        </div>
+
+        <div class="row">
           <div>
-            <label for="address">Versandadresse</label>
-            <textarea
-              id="address"
-              placeholder="z. B.&#10;Daniela Hönig, Pöhlbergsiedlung 5, 09456 Annaberg-B., Deutschland"
-            ></textarea>
+            <label for="orderNumber">Shopify-Bestellnummer</label>
+            <input
+              id="orderNumber"
+              type="text"
+              placeholder="#St219732156"
+              autocomplete="off"
+            />
           </div>
-
-          <div class="row">
-            <div>
-              <label for="orderNumber">Shopify-Bestellnummer</label>
-              <input
-                id="orderNumber"
-                type="text"
-                placeholder="#St219732156"
-                autocomplete="off"
-              />
-            </div>
-            <div>
-              <label for="childName">Name des Kindes</label>
-              <input
-                id="childName"
-                type="text"
-                placeholder="Nina"
-                autocomplete="off"
-              />
-            </div>
-          </div>
-
           <div>
-            <label>Einband</label>
-            <div class="pill-row">
-              <label class="pill">
-                <input type="radio" name="bookType" value="HC" checked />
-                <span>Hardcover</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="bookType" value="SC" />
-                <span>Softcover</span>
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label>Geschichte</label>
-            <div class="pill-row" id="storyPills">
-              <label class="pill">
-                <input type="radio" name="storyType" value="pferde" checked />
-                <span>🐴 Pferde</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="eisprinzessin" />
-                <span❄>❄️ Eisprinzessin</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="meerjungfrauen" />
-                <span>🧜‍♀️ Meerjungfrau</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="einhörner" />
-                <span>🦄 Einhorn</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="prinzessin" />
-                <span>👑 Prinzessin</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="feuerwehr" />
-                <span>🚒 Feuerwehr</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="astronaut" />
-                <span>🚀 Astronaut</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="dinosaurier" />
-                <span>🦖 Dinosaurier</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="superheld" />
-                <span>🦸‍♂️ Superheld</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="ritter" />
-                <span>⚔️ Ritter</span>
-              </label>
-              <label class="pill">
-                <input type="radio" name="storyType" value="pirat" />
-                <span>🏴‍☠️ Pirat</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="btn-row">
-            <button class="primary" onclick="downloadBoth()">Beide XML herunterladen</button>
-            <button class="secondary" onclick="downloadMastering()">Nur Mastering</button>
-            <button class="secondary" onclick="downloadOrder()">Nur DropShipOrder</button>
-          </div>
-
-          <div class="hint">
-            ISBN wird automatisch aus Präfix <code>9789000</code> + Bestellnummer erzeugt.
-            Umfang ist fest auf 36 Seiten.
+            <label for="childName">Name des Kindes</label>
+            <input
+              id="childName"
+              type="text"
+              placeholder="Nina"
+              autocomplete="off"
+            />
           </div>
         </div>
 
-        <!-- Vorschau -->
-        <div class="panel">
-          <div class="panel-title">Vorschau</div>
-
-          <div>
-            <label for="masteringPreview">Mastering XML</label>
-            <textarea id="masteringPreview" class="readonly" readonly></textarea>
+        <div>
+          <label>Einband</label>
+          <div class="pill-row">
+            <label class="pill">
+              <input type="radio" name="bookType" value="HC" checked />
+              <span>Hardcover</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="bookType" value="SC" />
+              <span>Softcover</span>
+            </label>
           </div>
+        </div>
 
-          <div>
-            <label for="orderPreview">DropShipOrder XML</label>
-            <textarea id="orderPreview" class="readonly" readonly></textarea>
+        <div class="story-group">
+          <label>Geschichte</label>
+          <div class="story-row">
+            <label class="pill">
+              <input type="radio" name="storyType" value="pferde" checked />
+              <span>🐴 Pferde</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="eisprinzessin" />
+              <span>❄️ Eisprinzessin</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="meerjungfrauen" />
+              <span>🧜‍♀️ Meerjungfrau</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="einhörner" />
+              <span>🦄 Einhorn</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="prinzessin" />
+              <span>👑 Prinzessin</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="feuerwehr" />
+              <span>🚒 Feuerwehr</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="astronaut" />
+              <span>🚀 Astronaut</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="dinosaurier" />
+              <span>🦖 Dinosaurier</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="superheld" />
+              <span>🦸‍♂️ Superheld</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="ritter" />
+              <span>⚔️ Ritter</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="storyType" value="pirat" />
+              <span>🏴‍☠️ Pirat</span>
+            </label>
           </div>
+        </div>
+
+        <div class="btn-main-wrap">
+          <button class="btn-main" onclick="downloadBoth()">
+            <span class="icon">⬇️</span>
+            <span>Beide XML-Dateien herunterladen</span>
+          </button>
+        </div>
+
+        <div class="footer-hint">
+          Mastering zuerst in <code>/mastering</code> hochladen, danach DropShipOrder in
+          <code>/order</code>. ISBN = 9789000 + Bestellnummer (nur Ziffern), Umfang 36 Seiten.
         </div>
       </div>
     </div>
@@ -624,13 +633,6 @@
       return { xml, isbn, orderNumber: orderRaw };
     }
 
-    function refreshPreviews() {
-      const m = buildMasteringXml();
-      const o = buildOrderXml();
-      document.getElementById("masteringPreview").value = m.xml;
-      document.getElementById("orderPreview").value = o.xml;
-    }
-
     function downloadTextFile(filename, content) {
       const blob = new Blob([content], { type: "application/xml;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -643,39 +645,16 @@
       URL.revokeObjectURL(url);
     }
 
-    function downloadMastering() {
-      const { xml, isbn } = buildMasteringXml();
-      const filename = `${isbn}_MasteringOrder.xml`;
-      downloadTextFile(filename, xml);
-      refreshPreviews();
-    }
-
-    function downloadOrder() {
-      const { xml, orderNumber } = buildOrderXml();
-      const filename = `CPI_DropShipOrder_${orderNumber || "Order"}.xml`;
-      downloadTextFile(filename, xml);
-      refreshPreviews();
-    }
-
     function downloadBoth() {
-      downloadMastering();
-      downloadOrder();
+      const mastering = buildMasteringXml();
+      const order = buildOrderXml();
+
+      const masteringFilename = `${mastering.isbn}_MasteringOrder.xml`;
+      const orderFilename = `CPI_DropShipOrder_${order.orderNumber || "Order"}.xml`;
+
+      downloadTextFile(masteringFilename, mastering.xml);
+      downloadTextFile(orderFilename, order.xml);
     }
-
-    ["address", "orderNumber", "childName"].forEach((id) => {
-      const el = document.getElementById(id);
-      el.addEventListener("input", refreshPreviews);
-    });
-
-    document
-      .querySelectorAll('input[name="bookType"]')
-      .forEach((el) => el.addEventListener("change", refreshPreviews));
-
-    document
-      .querySelectorAll('input[name="storyType"]')
-      .forEach((el) => el.addEventListener("change", refreshPreviews));
-
-    window.addEventListener("load", refreshPreviews);
   </script>
 </body>
 </html>
