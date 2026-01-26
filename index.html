@@ -1,1 +1,813 @@
-das ist noch ein test haha
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Storylio XML Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-elevated: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.15);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --danger: #f97373;
+      --border-subtle: #1f2937;
+      --radius-lg: 16px;
+      --radius-full: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 960px;
+      background: linear-gradient(145deg, rgba(148,163,184,0.12), rgba(15,23,42,0.98));
+      border-radius: 24px;
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow:
+        0 24px 80px rgba(15,23,42,0.85),
+        0 0 0 1px rgba(15,23,42,0.8);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+    }
+
+    .app-header {
+      padding: 18px 24px 12px;
+      border-bottom: 1px solid rgba(148,163,184,0.3);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, #e0f2fe 0, #38bdf8 35%, #0ea5e9 60%, #0369a1 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1220;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow:
+        0 0 0 1px rgba(15,23,42,0.6),
+        0 10px 25px rgba(8,47,73,0.9);
+    }
+
+    .brand-text-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.25);
+      color: #bbf7d0;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .header-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(148,163,184,0.4);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,0.7);
+    }
+
+    .app-body {
+      padding: 18px 24px 22px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .app-body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: rgba(15,23,42,0.9);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 16px 16px 14px;
+      box-shadow:
+        0 18px 40px rgba(15,23,42,0.85),
+        inset 0 1px 0 rgba(148,163,184,0.13);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .input,
+    .select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(31,41,55,0.9);
+      background: rgba(15,23,42,0.95);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .input:focus,
+    .select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
+      background: rgba(15,23,42,0.98);
+    }
+
+    .input::placeholder {
+      color: rgba(148,163,184,0.7);
+    }
+
+    .helper-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .radio-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius-full);
+      padding: 6px 10px;
+      border: 1px solid rgba(31,41,55,0.9);
+      background: rgba(15,23,42,0.92);
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-radio input {
+      display: none;
+    }
+
+    .pill-radio.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.35);
+      background: rgba(15,23,42,1);
+      color: var(--text-main);
+    }
+
+    .pill-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: transparent;
+    }
+
+    .pill-radio.active .pill-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(56,189,248,0.8);
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: radial-gradient(circle at 30% 0, #e0f2fe 0, #38bdf8 40%, #0ea5e9 70%, #0369a1 100%);
+      color: #0b1120;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow:
+        0 14px 35px rgba(8,47,73,0.85),
+        0 0 0 1px rgba(15,23,42,0.65);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+      box-shadow:
+        0 18px 42px rgba(8,47,73,0.98),
+        0 0 0 1px rgba(15,23,42,0.8);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow:
+        0 8px 24px rgba(8,47,73,0.85),
+        0 0 0 1px rgba(15,23,42,0.9);
+    }
+
+    .btn-icon {
+      font-size: 14px;
+    }
+
+    .badge-small {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .status-text strong {
+      color: var(--accent);
+    }
+
+    .log-box {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(15,23,42,0.95);
+      border: 1px dashed rgba(55,65,81,0.9);
+      color: var(--text-muted);
+      white-space: pre-wrap;
+      max-height: 180px;
+      overflow: auto;
+    }
+
+    .log-highlight {
+      color: #e5e7eb;
+    }
+
+    .xml-preview {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      background: rgba(15,23,42,0.95);
+      border-radius: 10px;
+      border: 1px solid rgba(31,41,55,0.9);
+      padding: 10px;
+      color: #d1d5db;
+      max-height: 210px;
+      overflow: auto;
+      white-space: pre;
+    }
+
+    .xml-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .xml-tab {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(31,41,55,0.9);
+      background: rgba(15,23,42,0.95);
+      font-size: 11px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .xml-tab.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.3);
+    }
+
+    .error-text {
+      color: var(--danger);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">S</div>
+        <div>
+          <div class="brand-text-title">
+            Storylio XML
+            <span class="brand-badge">CPI PoD Helper</span>
+          </div>
+          <div class="brand-text-sub">
+            Aus Shopify-Adresszeile &amp; Order-ID in einem Klick zu CPI-konformen XMLs.
+          </div>
+        </div>
+      </div>
+      <div class="header-pill">
+        <span class="header-pill-dot"></span>
+        Live • Lokal im Browser, keine Server
+      </div>
+    </header>
+
+    <main class="app-body">
+      <!-- Linke Seite: Eingaben -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Eingaben</div>
+            <div class="card-subtitle">Shopify-Daten einfügen, Cover-Typ wählen, XML generieren.</div>
+          </div>
+          <div class="badge-small">Schritt 1 von 1</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="addressInput">Adresszeile (aus Shopify kopiert)</label>
+          <input
+            id="addressInput"
+            class="input"
+            type="text"
+            placeholder="z. B. Daniela Hönig, Pöhlbergsiedlung 5, 09456 Annaberg-B., Deutschland"
+          />
+          <div class="helper-text">
+            Format: <span class="log-highlight">Name, Straße Hausnummer, PLZ Ort, Land</span>
+          </div>
+          <div id="addressError" class="error-text" style="display:none;"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="orderInput">Shopify-Bestellnummer</label>
+          <input
+            id="orderInput"
+            class="input"
+            type="text"
+            placeholder="#St222832156"
+          />
+          <div class="helper-text">
+            <span class="log-highlight">#</span> wird automatisch entfernt, z. B. <span class="log-highlight">St222832156</span>.
+          </div>
+          <div id="orderError" class="error-text" style="display:none;"></div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Cover-Typ</div>
+          <div class="radio-row">
+            <label class="pill-radio active" data-cover="HC">
+              <span class="pill-dot"></span>
+              <span>Hardcover (HC)</span>
+            </label>
+            <label class="pill-radio" data-cover="SC">
+              <span class="pill-dot"></span>
+              <span>Softcover (SC)</span>
+            </label>
+          </div>
+          <div class="helper-text">
+            Steuert <span class="log-highlight">&lt;BookType&gt;</span>, Papier und Dateinamen-Suffix (<span class="log-highlight">_Cover_HC</span> / <span class="log-highlight">_Cover_SC</span>).
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <div class="status-text">
+            Ausgabe-Dateien: <strong>Mastering XML</strong> &amp; <strong>DropShipOrder XML</strong>
+          </div>
+          <button id="generateBtn" class="btn-primary">
+            <span class="btn-icon">⚙️</span>
+            <span>XML generieren &amp; downloaden</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Rechte Seite: Vorschau & Log -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Vorschau &amp; Hinweise</div>
+            <div class="card-subtitle">Schnellcheck der generierten Inhalte und Dateinamen.</div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Generierungslog</div>
+          <div id="logBox" class="log-box">
+Bereit. Füge links die Shopify-Adresszeile und Order-ID ein, wähle HC/SC
+und klicke dann auf <span class="log-highlight">"XML generieren & downloaden"</span>.
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">XML-Vorschau</div>
+          <div class="xml-tabs">
+            <button class="xml-tab active" data-tab="mastering">Mastering.xml</button>
+            <button class="xml-tab" data-tab="order">DropShipOrder.xml</button>
+          </div>
+          <pre id="xmlPreview" class="xml-preview">&lt;!-- Noch keine XML generiert. --&gt;</pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const ISBN_PREFIX = "978900";
+
+    const COUNTRY_MAP = {
+      "deutschland": "DE",
+      "germany": "DE",
+      "schweiz": "CH",
+      "switzerland": "CH",
+      "österreich": "AT",
+      "austria": "AT"
+    };
+
+    const DEFAULT_HEIGHT_MM = 200;
+    const DEFAULT_WIDTH_MM = 200;
+    const DEFAULT_PAGES = 36;
+
+    const addressInput = document.getElementById("addressInput");
+    const orderInput = document.getElementById("orderInput");
+    const addressError = document.getElementById("addressError");
+    const orderError = document.getElementById("orderError");
+    const generateBtn = document.getElementById("generateBtn");
+    const logBox = document.getElementById("logBox");
+    const xmlPreview = document.getElementById("xmlPreview");
+    const xmlTabs = document.querySelectorAll(".xml-tab");
+    const coverPills = document.querySelectorAll(".pill-radio");
+
+    let currentCoverType = "HC";
+    let lastMasteringXml = "";
+    let lastOrderXml = "";
+
+    coverPills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        coverPills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        currentCoverType = pill.getAttribute("data-cover");
+      });
+    });
+
+    xmlTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        xmlTabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        if (tab.getAttribute("data-tab") === "mastering") {
+          xmlPreview.textContent = lastMasteringXml || "<!-- Noch keine Mastering-XML generiert. -->";
+        } else {
+          xmlPreview.textContent = lastOrderXml || "<!-- Noch keine DropShipOrder-XML generiert. -->";
+        }
+      });
+    });
+
+    function xmlEscape(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+    }
+
+    function parseAddress(raw) {
+      const parts = raw.split(",").map(p => p.trim()).filter(Boolean);
+      if (parts.length < 4) {
+        throw new Error("Adresse muss das Format 'Name, Straße Hausnummer, PLZ Ort, Land' haben.");
+      }
+      const name = parts[0];
+      const street = parts[1];
+      const plzOrt = parts[2];
+      const countryName = parts[3];
+
+      const plzOrtParts = plzOrt.split(/\s+/);
+      if (plzOrtParts.length < 2) {
+        throw new Error("Der dritte Teil der Adresse muss PLZ und Ort enthalten, z.B. '09456 Annaberg-B.'.");
+      }
+      const zip = plzOrtParts[0];
+      const city = plzOrtParts.slice(1).join(" ");
+
+      const countryCode = COUNTRY_MAP[countryName.toLowerCase()] || "DE";
+
+      return { name, street, zip, city, country: countryCode };
+    }
+
+    function normalizeOrderNumber(raw) {
+      let order = raw.trim();
+      if (order.startsWith("#")) {
+        order = order.slice(1).trim();
+      }
+      if (!order) {
+        throw new Error("Bestellnummer darf nicht leer sein.");
+      }
+      return order;
+    }
+
+    function makeIsbnFromOrder(orderNumber) {
+      const digits = (orderNumber.match(/\d+/g) || []).join("");
+      if (!digits) {
+        throw new Error("Bestellnummer enthält keine Ziffern, kann keine ISBN erzeugen.");
+      }
+      return ISBN_PREFIX + digits;
+    }
+
+    function currentDateTime() {
+      const now = new Date();
+      const pad = n => n.toString().padStart(2, "0");
+      const year = now.getFullYear();
+      const month = pad(now.getMonth() + 1);
+      const day = pad(now.getDate());
+      const hours = pad(now.getHours());
+      const mins = pad(now.getMinutes());
+      return {
+        sentDate: `${year}${month}${day}`,
+        sentTime: `${hours}:${mins}`
+      };
+    }
+
+    function generateMasteringXml(data) {
+      const { sentDate, sentTime } = currentDateTime();
+
+      const isHC = data.coverType === "HC";
+      const bookType = isHC ? "HC" : "SC";
+      const coverSuffix = isHC ? "HC" : "SC";
+      const coverPaper = isHC ? "150g_BD100" : "275g_BD100";
+
+      const xml =
+`<?xml version="1.0" encoding="UTF-8"?>
+<CPI>
+  <Header>
+    <FromCompany>Storylio</FromCompany>
+    <FromCompanyNumber>31174</FromCompanyNumber>
+    <SentDate>${sentDate}</SentDate>
+    <SentTime>${sentTime}</SentTime>
+    <FromPerson>Amir Schariaty</FromPerson>
+    <FromEmail>storylio.hilfe@gmail.com</FromEmail>
+  </Header>
+
+  <Title>
+    <Type>import</Type>
+
+    <ISBN>${xmlEscape(data.isbn)}</ISBN>
+    <Author>Storylio</Author>
+    <Title>Pferdeabenteuer - Personalisiertes Kinderbuch</Title>
+
+    <Height>${DEFAULT_HEIGHT_MM}</Height>
+    <Width>${DEFAULT_WIDTH_MM}</Width>
+
+    <BookType>${bookType}</BookType>
+    <Backing>straight</Backing>
+
+    <Cover>
+      <Pages>1</Pages>
+      <Lamination>glossy</Lamination>
+      <PaperName>${coverPaper}</PaperName>
+      <FileName>${xmlEscape(data.isbn)}_Cover_${coverSuffix}.pdf</FileName>
+      <BarcodePosition>bottom-right</BarcodePosition>
+    </Cover>
+
+    <Text>
+      <TotalExtent>${DEFAULT_PAGES}</TotalExtent>
+      <ColourPages>${DEFAULT_PAGES}</ColourPages>
+      <HeadTailBand>none</HeadTailBand>
+      <Ribbon>none</Ribbon>
+      <PaperName>140g_BD100</PaperName>
+      <FileName>${xmlEscape(data.isbn)}_Bookblock.pdf</FileName>
+    </Text>
+
+  </Title>
+</CPI>
+`;
+      return xml;
+    }
+
+    function generateOrderXml(data) {
+      const { sentDate, sentTime } = currentDateTime();
+
+      const xml =
+`<?xml version="1.0" encoding="utf-8"?>
+<CPI>
+  <Header>
+    <FromCompany>Storylio</FromCompany>
+    <FromCompanyNumber>31174</FromCompanyNumber>
+    <SentDate>${sentDate}</SentDate>
+    <SentTime>${sentTime}</SentTime>
+    <FromPerson>Amir Schariaty</FromPerson>
+    <FromEmail>storylio.hilfe@gmail.com</FromEmail>
+  </Header>
+
+  <DropShipOrder>
+    <OrderNumber>${xmlEscape(data.orderNumber)}</OrderNumber>
+    <Shipping>DHL Standard</Shipping>
+    <InvoiceFile></InvoiceFile>
+
+    <Product>
+      <EAN>${xmlEscape(data.isbn)}</EAN>
+      <Copies>1</Copies>
+    </Product>
+
+    <ShippingAddress>
+      <AddressLine1>${xmlEscape(data.name)}</AddressLine1>
+      <AddressLine2></AddressLine2>
+      <Street>${xmlEscape(data.street)}</Street>
+      <ZIP>${xmlEscape(data.zip)}</ZIP>
+      <City>${xmlEscape(data.city)}</City>
+      <Phone></Phone>
+      <Country>${xmlEscape(data.country)}</Country>
+    </ShippingAddress>
+  </DropShipOrder>
+</CPI>
+`;
+      return xml;
+    }
+
+    function downloadFile(filename, content) {
+      const blob = new Blob([content], { type: "application/xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function log(message, isError = false) {
+      const time = new Date().toLocaleTimeString("de-DE", { hour12: false });
+      const prefix = isError ? "✖" : "✔";
+      const color = isError ? "var(--danger)" : "var(--accent)";
+      const line = `%c[${time}] ${prefix} ${message}\n`;
+      // In der Box:
+      const existing = logBox.textContent || "";
+      logBox.textContent = `[${time}] ${prefix} ${message}\n` + existing;
+    }
+
+    generateBtn.addEventListener("click", () => {
+      addressError.style.display = "none";
+      orderError.style.display = "none";
+
+      const rawAddress = addressInput.value.trim();
+      const rawOrder = orderInput.value.trim();
+
+      if (!rawAddress) {
+        addressError.textContent = "Bitte die Adresszeile einfügen.";
+        addressError.style.display = "block";
+        return;
+      }
+      if (!rawOrder) {
+        orderError.textContent = "Bitte die Shopify-Bestellnummer eingeben.";
+        orderError.style.display = "block";
+        return;
+      }
+
+      let addr, orderNumber, isbn;
+
+      try {
+        addr = parseAddress(rawAddress);
+      } catch (e) {
+        addressError.textContent = e.message;
+        addressError.style.display = "block";
+        log(`Adress-Parsing fehlgeschlagen: ${e.message}`, true);
+        return;
+      }
+
+      try {
+        orderNumber = normalizeOrderNumber(rawOrder);
+      } catch (e) {
+        orderError.textContent = e.message;
+        orderError.style.display = "block";
+        log(`Order-ID ungültig: ${e.message}`, true);
+        return;
+      }
+
+      try {
+        isbn = makeIsbnFromOrder(orderNumber);
+      } catch (e) {
+        orderError.textContent = e.message;
+        orderError.style.display = "block";
+        log(`ISBN konnte nicht erzeugt werden: ${e.message}`, true);
+        return;
+      }
+
+      const data = {
+        orderNumber,
+        isbn,
+        name: addr.name,
+        street: addr.street,
+        zip: addr.zip,
+        city: addr.city,
+        country: addr.country,
+        coverType: currentCoverType
+      };
+
+      const masteringXml = generateMasteringXml(data);
+      const orderXml = generateOrderXml(data);
+
+      lastMasteringXml = masteringXml;
+      lastOrderXml = orderXml;
+
+      const masteringFilename = `${data.isbn}_Mastering.xml`;
+      const orderFilename = `CPI_DropShipOrder_${data.orderNumber}.xml`;
+
+      downloadFile(masteringFilename, masteringXml);
+      downloadFile(orderFilename, orderXml);
+
+      xmlTabs.forEach(t => t.classList.remove("active"));
+      xmlTabs[0].classList.add("active");
+      xmlPreview.textContent = masteringXml;
+
+      log(`XML erzeugt für Order ${data.orderNumber} | ISBN ${data.isbn}`);
+      log(`Bitte PDFs mit folgenden Dateinamen erstellen:`);
+      log(`- ${data.isbn}_Bookblock.pdf`);
+      log(`- ${data.isbn}_Cover_${data.coverType}.pdf`);
+    });
+  </script>
+</body>
+</html>
