@@ -312,68 +312,68 @@ function generate() {
     /* -------- MASTERING XML -------- */
     const mastering = `<?xml version="1.0" encoding="UTF-8"?>
 <CPI>
-<Header>
-<FromCompany>${CFG.company}</FromCompany>
-<FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>
-<SentDate>${date}</SentDate>
-<SentTime>${time}</SentTime>
-<FromPerson>${CFG.person}</FromPerson>
-<FromEmail>${CFG.email}</FromEmail>
-</Header>
-<Title>
-<Type>import</Type>
-<ISBN>${isbn}</ISBN>
-<Author>${CFG.company}</Author>
-<Title>${title}</Title>
-<Height>200</Height>
-<Width>200</Width>
-<BookType>${bookType}</BookType>
-<Backing>straight</Backing>
-<Cover>
-<Pages>1</Pages>
-<Lamination>glossy</Lamination>
-<PaperName>${bookType==="HC"?"150g_BD100":"275g_BD100"}</PaperName>
-<FileName>${isbn}_Cover_${bookType}.pdf</FileName>
-</Cover>
-<Text>
-<TotalExtent>${CFG.pages}</TotalExtent>
-<ColourPages>${CFG.pages}</ColourPages>
-<HeadTailBand>none</HeadTailBand>
-<Ribbon>none</Ribbon>
-<PaperName>140g_BD100</PaperName>
-<FileName>${isbn}_Bookblock.pdf</FileName>
-</Text>
-</Title>
+  <Header>
+    <FromCompany>${CFG.company}</FromCompany>
+    <FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>
+    <SentDate>${date}</SentDate>
+    <SentTime>${time}</SentTime>
+    <FromPerson>${CFG.person}</FromPerson>
+    <FromEmail>${CFG.email}</FromEmail>
+  </Header>
+  <Title>
+    <Type>import</Type>
+    <ISBN>${isbn}</ISBN>
+    <Author>${CFG.company}</Author>
+    <Title>${title}</Title>
+    <Height>200</Height>
+    <Width>200</Width>
+    <BookType>${bookType}</BookType>
+    <Backing>straight</Backing>
+    <Cover>
+      <Pages>1</Pages>
+      <Lamination>glossy</Lamination>
+      <PaperName>${bookType === "HC" ? "150g_BD100" : "275g_BD100"}</PaperName>
+      <FileName>${isbn}_Cover_${bookType}.pdf</FileName>
+    </Cover>
+    <Text>
+      <TotalExtent>${CFG.pages}</TotalExtent>
+      <ColourPages>${CFG.pages}</ColourPages>
+      <HeadTailBand>none</HeadTailBand>
+      <Ribbon>none</Ribbon>
+      <PaperName>140g_BD100</PaperName>
+      <FileName>${isbn}_Bookblock.pdf</FileName>
+    </Text>
+  </Title>
 </CPI>`;
 
     /* -------- ORDER XML -------- */
     const orderXml = `<?xml version="1.0" encoding="utf-8"?>
 <CPI>
-<Header>
-<FromCompany>${CFG.company}</FromCompany>
-<FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>
-<SentDate>${date}</SentDate>
-<SentTime>${time}</SentTime>
-<FromPerson>${CFG.person}</FromPerson>
-<FromEmail>${CFG.email}</FromEmail>
-</Header>
-<DropShipOrder>
-<OrderNumber>${order}</OrderNumber>
-<Shipping>DHL Standard</Shipping>
-<Product>
-<EAN>${isbn}</EAN>
-<Copies>1</Copies>
-</Product>
-<ShippingAddress>
-<AddressLine1>${addr.name}</AddressLine1>
-<AddressLine2></AddressLine2>
-<Street>${addr.street}</Street>
-<ZIP>${addr.zip}</ZIP>
-<City>${addr.city}</City>
-<Phone>${addr.phone}</Phone>
-<Country>${addr.country}</Country>
-</ShippingAddress>
-</DropShipOrder>
+  <Header>
+    <FromCompany>${CFG.company}</FromCompany>
+    <FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>
+    <SentDate>${date}</SentDate>
+    <SentTime>${time}</SentTime>
+    <FromPerson>${CFG.person}</FromPerson>
+    <FromEmail>${CFG.email}</FromEmail>
+  </Header>
+  <DropShipOrder>
+    <OrderNumber>${order}</OrderNumber>
+    <Shipping>DHL Standard</Shipping>
+    <Product>
+      <EAN>${isbn}</EAN>
+      <Copies>1</Copies>
+    </Product>
+    <ShippingAddress>
+      <AddressLine1>${addr.name}</AddressLine1>
+      <AddressLine2></AddressLine2>
+      <Street>${addr.street}</Street>
+      <ZIP>${addr.zip}</ZIP>
+      <City>${addr.city}</City>
+      <Phone>${addr.phone}</Phone>
+      <Country>${addr.country}</Country>
+    </ShippingAddress>
+  </DropShipOrder>
 </CPI>`;
 
     download(`${isbn}_MasteringOrder.xml`, mastering);
