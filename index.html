@@ -204,11 +204,6 @@
       transform: translateY(0);
     }
 
-    .pill span small {
-      font-size: 0.7rem;
-      opacity: 0.85;
-    }
-
     .story-group {
       padding: 10px;
       border-radius: 16px;
@@ -223,11 +218,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-    }
-
-    .hint {
-      font-size: 0.75rem;
-      color: var(--text-muted);
     }
 
     .btn-main-wrap {
@@ -286,7 +276,7 @@
             Storylio XML Generator
             <span class="badge">POD</span>
           </h1>
-          <div class="subtitle">Wenige Felder ausfüllen, Klick – beide XML-Dateien fertig.</div>
+          <div class="subtitle">Adresse + Bestellnummer rein, Klick – beide XMLs fertig.</div>
         </div>
       </div>
 
@@ -451,27 +441,44 @@
       return (str || "").replace(/\D+/g, "");
     }
 
+    // NEU: Adressparser ohne Adresszusatz in <Street>
     function parseAddress(raw) {
-      const parts = (raw || "")
+      if (!raw) {
+        throw new Error("Adresse fehlt");
+      }
+
+      const parts = raw
         .split("\n")
         .join(" ")
         .split(",")
         .map((p) => p.trim())
-        .filter((p) => p.length > 0);
+        .filter(Boolean);
 
-      const [line1 = "", street = "", zipCity = "", country = ""] = parts;
-
-      let zip = "";
-      let city = "";
-      if (zipCity) {
-        const m = zipCity.match(/^(\S+)\s+(.+)$/);
-        if (m) {
-          zip = m[1];
-          city = m[2];
-        } else {
-          city = zipCity;
-        }
+      // Erwartet mindestens: Name, Straße, PLZ Ort, Land
+      if (parts.length < 4) {
+        throw new Error(
+          "Adresse unvollständig. Erwartet: Name, Straße Hausnr, PLZ Ort, Land"
+        );
       }
+
+      const addressLine1 = parts[0]; // Name
+      const street = parts[1];       // nur Straße + Hausnummer
+
+      const middleParts = parts.slice(2); // Rest nach Straße
+      const countryRaw = middleParts.pop(); // letztes Element = Land
+
+      // in middleParts z. B.:
+      // ["09456 Annaberg-B."]
+      // oder ["Wohnung", "8311 Brütten"]
+      const zipCityPart = middleParts.find((p) => /^\d{4,6}\s+.+$/.test(p));
+
+      if (!zipCityPart) {
+        throw new Error("PLZ und Ort konnten nicht erkannt werden");
+      }
+
+      const match = zipCityPart.match(/^(\d{4,6})\s+(.+)$/);
+      const zip = match[1];
+      const city = match[2];
 
       const countryMap = {
         deutschland: "DE",
@@ -482,23 +489,29 @@
         austria: "AT",
       };
 
-      let countryCode = "";
-      const lower = country.toLowerCase();
-      Object.keys(countryMap).forEach((key) => {
+      let country = "";
+      const lower = countryRaw.toLowerCase();
+      for (const key in countryMap) {
         if (lower.includes(key)) {
-          countryCode = countryMap[key];
+          country = countryMap[key];
+          break;
         }
-      });
-      if (!countryCode && country.length === 2) {
-        countryCode = country.toUpperCase();
+      }
+      if (!country) {
+        if (countryRaw.length === 2) {
+          country = countryRaw.toUpperCase();
+        } else {
+          throw new Error("Land nicht erkannt");
+        }
       }
 
       return {
-        addressLine1: line1,
+        addressLine1,
+        addressLine2: "",
         street,
         zip,
         city,
-        country: countryCode || country || "",
+        country,
       };
     }
 
@@ -595,7 +608,14 @@
       );
       const isbn = buildIsbn();
       const addressRaw = document.getElementById("address").value;
-      const addr = parseAddress(addressRaw);
+
+      let addr;
+      try {
+        addr = parseAddress(addressRaw);
+      } catch (e) {
+        alert("Adresse prüfen: " + e.message);
+        throw e;
+      }
 
       const xml = `<?xml version="1.0" encoding="utf-8"?>
 <CPI>
@@ -646,14 +666,18 @@
     }
 
     function downloadBoth() {
-      const mastering = buildMasteringXml();
-      const order = buildOrderXml();
+      try {
+        const mastering = buildMasteringXml();
+        const order = buildOrderXml();
 
-      const masteringFilename = `${mastering.isbn}_MasteringOrder.xml`;
-      const orderFilename = `CPI_DropShipOrder_${order.orderNumber || "Order"}.xml`;
+        const masteringFilename = `${mastering.isbn}_MasteringOrder.xml`;
+        const orderFilename = `CPI_DropShipOrder_${order.orderNumber || "Order"}.xml`;
 
-      downloadTextFile(masteringFilename, mastering.xml);
-      downloadTextFile(orderFilename, order.xml);
+        downloadTextFile(masteringFilename, mastering.xml);
+        downloadTextFile(orderFilename, order.xml);
+      } catch (e) {
+        // Fehler schon per alert gemeldet – hier nichts weiter tun
+      }
     }
   </script>
 </body>
