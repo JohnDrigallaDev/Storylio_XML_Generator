@@ -95,6 +95,12 @@
       flex: 1;
     }
 
+    @media (max-width: 720px) {
+      .row {
+        flex-direction: column;
+      }
+    }
+
     .pill-row {
       display: flex;
       gap: 8px;
@@ -162,8 +168,10 @@
     <div class="subtitle">Shopify-Daten einfügen → 2 CPI-XMLs herunterladen</div>
 
     <label>Versandadresse (Shopify Copy-Paste)</label>
-    <textarea id="address"
-      placeholder="Elena Rein, Teichtorstraße 2, DG, 37627 Stadtoldendorf, Deutschland, +491729391012"></textarea>
+    <textarea
+      id="address"
+      placeholder="Elena Rein, Teichtorstraße 2, DG, 37627 Stadtoldendorf, Deutschland, +491729391012"
+    ></textarea>
 
     <div class="row">
       <div>
@@ -188,19 +196,64 @@
       </label>
     </div>
 
+    <label>Widmung</label>
+    <div class="pill-row">
+      <label class="pill">
+        <input type="radio" name="dedication" value="with" checked />
+        <span>Mit Widmung</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="dedication" value="without" />
+        <span>Ohne Widmung</span>
+      </label>
+    </div>
+
     <label>Geschichte</label>
     <div class="pill-row">
-      <label class="pill"><input type="radio" name="story" value="pferde" checked /><span>🐴 Pferde</span></label>
-      <label class="pill"><input type="radio" name="story" value="eis" /><span>❄️ Eisprinzessin</span></label>
-      <label class="pill"><input type="radio" name="story" value="meer" /><span>🧜‍♀️ Meerjungfrau</span></label>
-      <label class="pill"><input type="radio" name="story" value="einhorn" /><span>🦄 Einhorn</span></label>
-      <label class="pill"><input type="radio" name="story" value="prinzessin" /><span>👑 Prinzessin</span></label>
-      <label class="pill"><input type="radio" name="story" value="feuerwehr" /><span>🚒 Feuerwehr</span></label>
-      <label class="pill"><input type="radio" name="story" value="astronaut" /><span>🚀 Astronaut</span></label>
-      <label class="pill"><input type="radio" name="story" value="dino" /><span>🦖 Dino</span></label>
-      <label class="pill"><input type="radio" name="story" value="superheld" /><span>🦸‍♂️ Superheld</span></label>
-      <label class="pill"><input type="radio" name="story" value="ritter" /><span>⚔️ Ritter</span></label>
-      <label class="pill"><input type="radio" name="story" value="pirat" /><span>🏴‍☠️ Pirat</span></label>
+      <label class="pill">
+        <input type="radio" name="story" value="pferde" checked />
+        <span>🐴 Pferde</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="eis" />
+        <span>❄️ Eisprinzessin</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="meer" />
+        <span>🧜‍♀️ Meerjungfrau</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="einhorn" />
+        <span>🦄 Einhorn</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="prinzessin" />
+        <span>👑 Prinzessin</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="feuerwehr" />
+        <span>🚒 Feuerwehr</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="astronaut" />
+        <span>🚀 Astronaut</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="dino" />
+        <span>🦖 Dino</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="superheld" />
+        <span>🦸‍♂️ Superheld</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="ritter" />
+        <span>⚔️ Ritter</span>
+      </label>
+      <label class="pill">
+        <input type="radio" name="story" value="pirat" />
+        <span>🏴‍☠️ Pirat</span>
+      </label>
     </div>
 
     <button class="btn" onclick="generate()">Beide XML-Dateien herunterladen</button>
@@ -208,192 +261,242 @@
     <div id="msg" class="message"></div>
   </div>
 
-<script>
-/* ---------------- CONFIG ---------------- */
-const CFG = {
-  company: "Storylio",
-  companyNo: "90004899",
-  person: "Amir Schariaty",
-  email: "storylio.hilfe@gmail.com",
-  isbnPrefix: "9789000",
-  pages: 36
-};
+  <script>
+    /* ---------------- CONFIG ---------------- */
+    const CFG = {
+      company: "Storylio",
+      companyNo: "90004899",
+      person: "Amir Schariaty",
+      email: "storylio.hilfe@gmail.com",
+      isbnPrefix: "9789000",
+      pages: 36, // TotalExtent
+    };
 
-const STORY_TITLES = {
-  pferde: "NAME - Der Kampf um das Lieblingspferd",
-  eis: "NAME - Die Eisprinzessin und das Herz des Winters",
-  meer: "NAME - Die Meerjungfrau",
-  einhorn: "NAME - Die Reise zum Regenbogen",
-  prinzessin: "NAME - Die Prinzessin",
-  feuerwehr: "NAME - Das große Abenteuer im Einsatz",
-  astronaut: "NAME - Der Astronaut",
-  dino: "NAME - Eine magische Reise in eine uralte Welt",
-  superheld: "NAME - Der Superheld in der Stadt",
-  ritter: "NAME - Der Ritter",
-  pirat: "NAME - Der Pirat"
-};
+    const STORY_TITLES = {
+      pferde: "NAME - Der Kampf um das Lieblingspferd",
+      eis: "NAME - Die Eisprinzessin und das Herz des Winters",
+      meer: "NAME - Die Meerjungfrau",
+      einhorn: "NAME - Die Reise zum Regenbogen",
+      prinzessin: "NAME - Die Prinzessin",
+      feuerwehr: "NAME - Das große Abenteuer im Einsatz",
+      astronaut: "NAME - Der Astronaut",
+      dino: "NAME - Eine magische Reise in eine uralte Welt",
+      superheld: "NAME - Der Superheld in der Stadt",
+      ritter: "NAME - Der Ritter",
+      pirat: "NAME - Der Pirat",
+    };
 
-/* ---------------- HELPERS ---------------- */
-function now() {
-  const d = new Date();
-  return {
-    date: d.toISOString().slice(0,10).replace(/-/g,""),
-    time: d.toTimeString().slice(0,5)
-  };
-}
-
-function cleanOrder(o) {
-  return o.replace(/^#/, "").trim();
-}
-
-function digits(s) {
-  return s.replace(/\D+/g,"");
-}
-
-/* ---------------- ADDRESS PARSER ---------------- */
-function parseAddress(raw) {
-  const parts = raw.split(",").map(p=>p.trim()).filter(Boolean);
-  if (parts.length < 3) throw "Adresse unvollständig";
-
-  const name = parts[0];
-  const street = parts[1];
-
-  let phone = "";
-  for (const p of parts) {
-    if (/^\+?\d[\d\s\-]{6,}$/.test(p)) {
-      phone = p.replace(/\s+/g,"");
-      break;
+    /* ---------------- HELPERS ---------------- */
+    function now() {
+      const d = new Date();
+      return {
+        date: d.toISOString().slice(0, 10).replace(/-/g, ""),
+        time: d.toTimeString().slice(0, 5),
+      };
     }
-  }
 
-  const zipCity = parts.find(p=>/^\d{4,6}\s+/.test(p));
-  if (!zipCity) throw "PLZ / Ort nicht erkannt";
-
-  const [, zip, city] = zipCity.match(/^(\d{4,6})\s+(.+)$/);
-
-  const map = {
-    deutschland:"DE", germany:"DE",
-    schweiz:"CH", switzerland:"CH",
-    österreich:"AT", austria:"AT"
-  };
-
-  let country = "";
-  for (const p of parts) {
-    const l = p.toLowerCase();
-    for (const k in map) {
-      if (l.includes(k)) country = map[k];
+    function cleanOrder(o) {
+      return o.replace(/^#/, "").trim();
     }
-  }
-  if (!country) throw "Land nicht erkannt";
 
-  return { name, street, zip, city, phone, country };
-}
+    function digits(s) {
+      return s.replace(/\D+/g, "");
+    }
 
-/* ---------------- MAIN ---------------- */
-function generate() {
-  const msg = document.getElementById("msg");
-  msg.textContent = "";
-  msg.className = "message";
+    /* ---------------- ADDRESS PARSER ---------------- */
+    function parseAddress(raw) {
+      const parts = raw
+        .split(",")
+        .map((p) => p.trim())
+        .filter(Boolean);
 
-  try {
-    const addr = parseAddress(document.getElementById("address").value);
-    const order = cleanOrder(document.getElementById("orderNumber").value);
-    const child = document.getElementById("childName").value.trim() || "NAME";
+      if (parts.length < 3) throw "Adresse unvollständig";
 
-    if (!order) throw "Bestellnummer fehlt";
+      const name = parts[0];
+      const street = parts[1];
 
-    const isbn = CFG.isbnPrefix + digits(order);
-    const {date,time} = now();
+      // Telefon suchen (falls vorhanden)
+      let phone = "";
+      for (const p of parts) {
+        if (/^\+?\d[\d\s\-]{6,}$/.test(p)) {
+          phone = p.replace(/\s+/g, "");
+          break;
+        }
+      }
 
-    const bookType = document.querySelector("input[name=bookType]:checked").value;
-    const storyKey = document.querySelector("input[name=story]:checked").value;
-    const title = STORY_TITLES[storyKey].replace("NAME", child);
+      // Zeile mit PLZ + Ort finden (z. B. "37627 Stadtoldendorf")
+      const zipCity = parts.find((p) => /^\d{4,6}\s+/.test(p));
+      if (!zipCity) throw "PLZ / Ort nicht erkannt";
 
-    /* -------- MASTERING XML -------- */
-    const mastering = `<?xml version="1.0" encoding="UTF-8"?>
-<CPI>
-  <Header>
-    <FromCompany>${CFG.company}</FromCompany>
-    <FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>
-    <SentDate>${date}</SentDate>
-    <SentTime>${time}</SentTime>
-    <FromPerson>${CFG.person}</FromPerson>
-    <FromEmail>${CFG.email}</FromEmail>
-  </Header>
-  <Title>
-    <Type>import</Type>
-    <ISBN>${isbn}</ISBN>
-    <Author>${CFG.company}</Author>
-    <Title>${title}</Title>
-    <Height>200</Height>
-    <Width>200</Width>
-    <BookType>${bookType}</BookType>
-    <Backing>straight</Backing>
-    <Cover>
-      <Pages>1</Pages>
-      <Lamination>glossy</Lamination>
-      <PaperName>${bookType === "HC" ? "150g_BD100" : "275g_BD100"}</PaperName>
-      <FileName>${isbn}_Cover_${bookType}.pdf</FileName>
-    </Cover>
-    <Text>
-      <TotalExtent>${CFG.pages}</TotalExtent>
-      <ColourPages>${CFG.pages}</ColourPages>
-      <HeadTailBand>none</HeadTailBand>
-      <Ribbon>none</Ribbon>
-      <PaperName>140g_BD100</PaperName>
-      <FileName>${isbn}_Bookblock.pdf</FileName>
-    </Text>
-  </Title>
-</CPI>`;
+      const match = zipCity.match(/^(\d{4,6})\s+(.+)$/);
+      if (!match) throw "PLZ / Ort nicht erkannt";
+      const zip = match[1];
+      const city = match[2];
 
-    /* -------- ORDER XML -------- */
-    const orderXml = `<?xml version="1.0" encoding="utf-8"?>
-<CPI>
-  <Header>
-    <FromCompany>${CFG.company}</FromCompany>
-    <FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>
-    <SentDate>${date}</SentDate>
-    <SentTime>${time}</SentTime>
-    <FromPerson>${CFG.person}</FromPerson>
-    <FromEmail>${CFG.email}</FromEmail>
-  </Header>
-  <DropShipOrder>
-    <OrderNumber>${order}</OrderNumber>
-    <Shipping>DHL Standard</Shipping>
-    <Product>
-      <EAN>${isbn}</EAN>
-      <Copies>1</Copies>
-    </Product>
-    <ShippingAddress>
-      <AddressLine1>${addr.name}</AddressLine1>
-      <AddressLine2></AddressLine2>
-      <Street>${addr.street}</Street>
-      <ZIP>${addr.zip}</ZIP>
-      <City>${addr.city}</City>
-      <Phone>${addr.phone}</Phone>
-      <Country>${addr.country}</Country>
-    </ShippingAddress>
-  </DropShipOrder>
-</CPI>`;
+      const map = {
+        deutschland: "DE",
+        germany: "DE",
+        schweiz: "CH",
+        switzerland: "CH",
+        österreich: "AT",
+        austria: "AT",
+      };
 
-    download(`${isbn}_MasteringOrder.xml`, mastering);
-    download(`CPI_DropShipOrder_${order}.xml`, orderXml);
+      let country = "";
+      for (const p of parts) {
+        const l = p.toLowerCase();
+        for (const k in map) {
+          if (l.includes(k)) country = map[k];
+        }
+      }
+      if (!country) throw "Land nicht erkannt";
 
-    msg.textContent = "✔ XML-Dateien erfolgreich erstellt";
-    msg.classList.add("success");
+      return { name, street, zip, city, phone, country };
+    }
 
-  } catch(e) {
-    msg.textContent = "❌ " + e;
-    msg.classList.add("error");
-  }
-}
+    /* ---------------- MAIN ---------------- */
+    function generate() {
+      const msg = document.getElementById("msg");
+      msg.textContent = "";
+      msg.className = "message";
 
-function download(name, text) {
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([text], {type:"application/xml"}));
-  a.download = name;
-  a.click();
-}
-</script>
+      try {
+        const addr = parseAddress(
+          document.getElementById("address").value || ""
+        );
+        const order = cleanOrder(
+          document.getElementById("orderNumber").value || ""
+        );
+        const child =
+          (document.getElementById("childName").value || "").trim() || "NAME";
+
+        if (!order) throw "Bestellnummer fehlt";
+
+        const isbn = CFG.isbnPrefix + digits(order);
+        const { date, time } = now();
+
+        const bookType = document.querySelector(
+          "input[name=bookType]:checked"
+        ).value;
+        const storyKey = document.querySelector(
+          "input[name=story]:checked"
+        ).value;
+        const dedicationValue = document.querySelector(
+          "input[name=dedication]:checked"
+        ).value;
+
+        const titleTemplate = STORY_TITLES[storyKey] || "NAME - Deine Geschichte";
+        const title = titleTemplate.replace("NAME", child);
+
+        // Widmungslogik für Farbseiten
+        // Mit Widmung: Seite 1 & 36 weiß → Farbseiten 2–35 → 34 Seiten
+        // Ohne Widmung: Seiten 1,2 & 36 weiß → Farbseiten 3–35 → 33 Seiten
+        let colourPages = 0;
+        let colourPositions = "";
+
+        if (dedicationValue === "with") {
+          colourPages = CFG.pages - 2; // 36 - 2 = 34
+          colourPositions = "2-35";
+        } else {
+          colourPages = CFG.pages - 3; // 36 - 3 = 33
+          colourPositions = "3-35";
+        }
+
+        /* -------- MASTERING XML -------- */
+        const masteringXml = [
+          '<?xml version="1.0" encoding="UTF-8"?>',
+          "<CPI>",
+          "  <Header>",
+          `    <FromCompany>${CFG.company}</FromCompany>`,
+          `    <FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>`,
+          `    <SentDate>${date}</SentDate>`,
+          `    <SentTime>${time}</SentTime>`,
+          `    <FromPerson>${CFG.person}</FromPerson>`,
+          `    <FromEmail>${CFG.email}</FromEmail>`,
+          "  </Header>",
+          "  <Title>",
+          "    <Type>import</Type>",
+          `    <ISBN>${isbn}</ISBN>`,
+          `    <Author>${CFG.company}</Author>`,
+          `    <Title>${title}</Title>`,
+          "    <Height>200</Height>",
+          "    <Width>200</Width>",
+          `    <BookType>${bookType}</BookType>`,
+          "    <Backing>straight</Backing>",
+          "    <Cover>",
+          "      <Pages>1</Pages>",
+          "      <Lamination>glossy</Lamination>",
+          `      <PaperName>${bookType === "HC" ? "150g_BD100" : "275g_BD100"}</PaperName>`,
+          `      <FileName>${isbn}_Cover_${bookType}.pdf</FileName>`,
+          "      <BarcodePosition>bottom-right</BarcodePosition>",
+          "    </Cover>",
+          "    <Text>",
+          `      <TotalExtent>${CFG.pages}</TotalExtent>`,
+          `      <ColourPages>${colourPages}</ColourPages>`,
+          `      <ColourPagesPosition>${colourPositions}</ColourPagesPosition>`,
+          "      <HeadTailBand>none</HeadTailBand>",
+          "      <Ribbon>none</Ribbon>",
+          "      <PaperName>140g_BD100</PaperName>",
+          `      <FileName>${isbn}_Bookblock.pdf</FileName>`,
+          "    </Text>",
+          "  </Title>",
+          "</CPI>",
+          "",
+        ].join("\n");
+
+        /* -------- ORDER XML -------- */
+        const orderXml = [
+          '<?xml version="1.0" encoding="utf-8"?>',
+          "<CPI>",
+          "  <Header>",
+          `    <FromCompany>${CFG.company}</FromCompany>`,
+          `    <FromCompanyNumber>${CFG.companyNo}</FromCompanyNumber>`,
+          `    <SentDate>${date}</SentDate>`,
+          `    <SentTime>${time}</SentTime>`,
+          `    <FromPerson>${CFG.person}</FromPerson>`,
+          `    <FromEmail>${CFG.email}</FromEmail>`,
+          "  </Header>",
+          "  <DropShipOrder>",
+          `    <OrderNumber>${order}</OrderNumber>`,
+          "    <Shipping>DHL Standard</Shipping>",
+          "    <InvoiceFile></InvoiceFile>",
+          "    <Product>",
+          `      <EAN>${isbn}</EAN>`,
+          "      <Copies>1</Copies>",
+          "    </Product>",
+          "    <ShippingAddress>",
+          `      <AddressLine1>${addr.name}</AddressLine1>`,
+          "      <AddressLine2></AddressLine2>",
+          `      <Street>${addr.street}</Street>`,
+          `      <ZIP>${addr.zip}</ZIP>`,
+          `      <City>${addr.city}</City>`,
+          `      <Phone>${addr.phone}</Phone>`,
+          `      <Country>${addr.country}</Country>`,
+          "    </ShippingAddress>",
+          "  </DropShipOrder>",
+          "</CPI>",
+          "",
+        ].join("\n");
+
+        download(`${isbn}_MasteringOrder.xml`, masteringXml);
+        download(`CPI_DropShipOrder_${order}.xml`, orderXml);
+
+        msg.textContent = "✔ XML-Dateien erfolgreich erstellt";
+        msg.classList.add("success");
+      } catch (e) {
+        msg.textContent = "❌ " + e;
+        msg.classList.add("error");
+      }
+    }
+
+    function download(name, text) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(
+        new Blob([text], { type: "application/xml;charset=utf-8" })
+      );
+      a.download = name;
+      a.click();
+    }
+  </script>
 </body>
 </html>
